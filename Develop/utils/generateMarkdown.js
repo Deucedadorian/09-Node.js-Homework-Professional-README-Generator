@@ -1,7 +1,29 @@
 // TODO: Create a function that returns a license badge based on which license is passed in
-
 // If there is no license, return an empty string
-function renderLicenseBadge(license) {}
+function renderLicenseBadge(license) {
+
+  let licenseKey = license.replace(/\s/g, "").split(".").join("").split("\"").join("").split("-").join("");
+
+  let licenses = {
+    ApacheLicense20: "[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)",
+    GNUGeneralPublicLicensev30: "[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)",
+    MITLicense: "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)",
+    BSD2ClauseSimplifiedLicense: "[![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)",
+    BSDClauseNeworRevisedLicense: "[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)",
+    BoostSoftwareLicense10: "[![License](https://img.shields.io/badge/License-Boost%201.0-lightblue.svg)](https://www.boost.org/LICENSE_1_0.txt)",
+    CreativeCommonsZerov10Universal: "[![License: CC0-1.0](https://licensebuttons.net/l/zero/1.0/80x15.png)](http://creativecommons.org/publicdomain/zero/1.0/)",
+    EclipsePublicLicense20: "[![License](https://img.shields.io/badge/License-EPL%201.0-red.svg)](https://opensource.org/licenses/EPL-1.0)",
+    GNUAfferoGeneralPublicLicensev30: "[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)",
+    GNUGeneralPublicLicensev20: "[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)",
+    GNULesserGeneralPublicLicensev21: "[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)",
+    MozillaPublicLicense20: "[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)",
+    TheUnlicense: "[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)",
+  }
+
+  let chosenLicense = licenses[licenseKey];
+
+  return chosenLicense;
+}
 
 // TODO: Create a function that returns the license link
 // If there is no license, return an empty string
@@ -12,45 +34,117 @@ function renderLicenseLink(license) {}
 function renderLicenseSection(license) {}
 
 // TODO: Create a function to generate markdown for README
-const generateMarkdown = (answers) =>
-  `# Title
-      
-${answers.title}
+const generateMarkdown = (answers) => {
 
-## Description
+  // string for building table of contents
+  let tableOfContents = `## Table of Contents\n
+`;
 
-${answers.description}
+  answers.gmail
+  let QuestionsAdded = false;
+  // build table of contents
+  for (let answer of Object.keys(answers)) {
+    if (answers[answer] && answers[answer] !== "None") {
+      if (answer === "email" || answer === "github") {
+        if (!QuestionsAdded) {
+          tableOfContents += `- [Questions](#Questions)\n`;
+          QuestionsAdded = true;
+        }
+      } else {
+        tableOfContents += `- [${answer}](#${answer})\n`;
+      }
+    }
+    console.log(answer);
+  }
 
-## Table of Contents
+  console.log(answers.email);
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Credits](#credits)
-- [License](#license)
+// string for building README file contents
+let readmeFile = '';
 
-## Installation
+if (answers.title) {
+  readmeFile += `# ${answers.title}
+  
+`;
+}
 
-${answers.installation}
+if (answers.license !== "None"){
+  readmeFile += `${renderLicenseBadge(answers.license)}
+  
+  `
+}
 
-## Usage
+if (answers.description) {
+  readmeFile += `## Description
+  
+  ${answers.description}
+  
+`;
+}
 
-${answers.usage}
+if (answers.tableOfContents) {
+  readmeFile += `${tableOfContents}
+`;
+}
 
-## Contributing
+if (answers.installation) {
+  readmeFile += `## Installation
+  
+  ${answers.installation}
+  
+`;
+}
 
-${answers.contributing}
+if (answers.usage) {
+  readmeFile += `## Usage
+  
+  ${answers.usage}
+  
+`;
+}
 
-## Test
+if (answers.contributing) {
+  readmeFile += `## Contributing
+  
+  ${answers.contributing}
+  
+`;
+} 
 
-${answers.test}
+if (answers.test) {
+  readmeFile += `## Test
+  
+  ${answers.test}
+  
+`;
+}
 
-## Questions
+if (answers.email || answers.github) {
+  readmeFile += `## Questions
+  
+`;
+}
 
-email: ${answers.email}
-github: ${answers.github}
+if (answers.email) {
+  readmeFile += `Feel free to email me @ <${answers.email}> if you have any further questions.
 
-## License
+`;
+}
 
-${answers.license}`;
+if(answers.github) {
+  readmeFile += `github: [${answers.github}](https://github.com/${answers.github})
+
+`;
+}
+
+if(answers.license && answers.license !== "None") {
+readmeFile += `## License
+
+`;
+}
+
+return readmeFile;
+
+};
 
 module.exports = { generateMarkdown }
