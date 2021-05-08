@@ -73,7 +73,7 @@ const promptUser = () => {
     ]);
 };
 
-// TODO: Create a function to initialize app
+// Initialize app
 const init = () => {
     promptUser()
         .then((answers) => writeFileAsync("dist/README.md", generateMarkdown(answers)))

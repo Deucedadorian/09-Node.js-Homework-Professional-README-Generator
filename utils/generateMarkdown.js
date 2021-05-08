@@ -14,7 +14,7 @@ let licenses = {
   TheUnlicense: "[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)",
 }
 
-// TODO: Create a function that returns a license badge based on which license is passed in
+// Returns a license badge based on which license is passed in
 // If there is no license, return an empty string
 function renderLicenseBadge(license) {
 
@@ -25,7 +25,7 @@ function renderLicenseBadge(license) {
   return chosenLicense;
 }
 
-// TODO: Create a function that returns the license link
+// Returns the license link
 // If there is no license, return an empty string
 function renderLicenseLink(license) {
   
@@ -39,7 +39,7 @@ function renderLicenseLink(license) {
   }
 }
 
-// TODO: Create a function that returns the license section of README
+// Returns the license section of README
 // If there is no license, return an empty string
 function renderLicenseSection(license) {
 
@@ -54,7 +54,7 @@ This aplicattion is covered under the ${license}. for more information, visit: $
     }
 }
 
-// TODO: Create a function to generate markdown for README
+// Generate markdown for README
 const generateMarkdown = (answers) => {
 
   // string for building table of contents
@@ -62,7 +62,7 @@ const generateMarkdown = (answers) => {
 
   answers.gmail
   let QuestionsAdded = false;
-  // build table of contents
+  // loop for building table of contents string
   for (let answer of Object.keys(answers)) {
     if (answers[answer] && answers[answer] !== "None" && answers[answer] !== answers.title && answers[answer] !== answers.description) {
       if (answer === "email" || answer === "github") {
@@ -76,88 +76,48 @@ const generateMarkdown = (answers) => {
     }
   }
 
-// string for building README file contents
-let readmeFile = '';
+  // string for building README file contents
+  let readmeFile = '';
 
-if (answers.title) {
-  readmeFile += `# ${answers.title}
-  
-`;
-}
+  // Series of if statments to add each section to the README
+  if (answers.title) {
+    readmeFile += `# ${answers.title}\n\n`;
+  }
+  if (answers.license !== "None") {
+    readmeFile += `${renderLicenseBadge(answers.license)}\n\n`;
+  }
+  if (answers.description) {
+    readmeFile += `## Description\n\n${answers.description}\n\n`;
+  }
+  if (tableOfContents !== "## Table of Contents\n\n") {
+    readmeFile += `${tableOfContents}\n`;
+  }
+  if (answers.installation) {
+    readmeFile += `## Installation\n\n${answers.installation}\n\n`;
+  }
+  if (answers.usage) {
+    readmeFile += `## Usage\n\n${answers.usage}\n\n`;
+  }
+  if (answers.contributing) {
+    readmeFile += `## Contributing\n\n${answers.contributing}\n\n`;
+  }
+  if (answers.test) {
+    readmeFile += `## Test\n\n${answers.test}\n\n`;
+  }
+  if (answers.email || answers.github) {
+    readmeFile += `## Questions\n\n`;
+  }
+  if (answers.email) {
+    readmeFile += `Feel free to email me at <${answers.email}> if you have any further questions.\n\n`;
+  }
+  if (answers.github) {
+    readmeFile += `github: [${answers.github}](https://github.com/${answers.github})\n\n`;
+  }
 
-if (answers.license !== "None"){
-  readmeFile += `${renderLicenseBadge(answers.license)}
-  
-  `
-}
+  //run render license function
+  readmeFile += renderLicenseSection(answers.license)
 
-if (answers.description) {
-  readmeFile += `## Description
-  
-  ${answers.description}
-  
-`;
-}
-
-if (tableOfContents !== "## Table of Contents\n\n") {
-  readmeFile += `${tableOfContents}
-`;
-}
-
-if (answers.installation) {
-  readmeFile += `## Installation
-  
-  ${answers.installation}
-  
-`;
-}
-
-if (answers.usage) {
-  readmeFile += `## Usage
-  
-  ${answers.usage}
-  
-`;
-}
-
-if (answers.contributing) {
-  readmeFile += `## Contributing
-  
-  ${answers.contributing}
-  
-`;
-} 
-
-if (answers.test) {
-  readmeFile += `## Test
-  
-  ${answers.test}
-  
-`;
-}
-
-if (answers.email || answers.github) {
-  readmeFile += `## Questions
-  
-`;
-}
-
-if (answers.email) {
-  readmeFile += `Feel free to email me at <${answers.email}> if you have any further questions.
-
-`;
-}
-
-if(answers.github) {
-  readmeFile += `github: [${answers.github}](https://github.com/${answers.github})
-
-`;
-}
-
-//run render license function
-readmeFile += renderLicenseSection(answers.license)
-
-return readmeFile;
+  return readmeFile;
 };
 
 module.exports = { generateMarkdown }
