@@ -45,7 +45,7 @@ renderLicenseBadge = function (license) {
     if(license !== "None") {
       let licenseSection = `## License
       
-  This aplicattion is covered under the ${license}. for more information, visit: ${renderLicenseLink(license)}`;
+  This application is covered under the ${license}. for more information, visit: ${renderLicenseLink(license)}`;
   
       return licenseSection;
       } else {
